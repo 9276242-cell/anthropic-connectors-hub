@@ -97,3 +97,29 @@ Detailed catalog of Khan & Co. Enterprise SaaS platforms scheduled for submissio
   * `get_quality_maturity_score` (Read only)
   * `compare_facility_performance` (Read only)
   * `update_strategic_target` (Destructive action)
+
+---
+
+## 5. Architectural Relationship with WhatsApp Robot Repositories
+
+The WhatsApp robot repositories (`whatsapp-bot-wt-hse12`, `whatsapp-bot-wt-isa`, `wa-wt-isoerp-full`) operate as messaging ingress clients.
+
+```
+                  ┌──────────────────────────────────────────────┐
+                  │          Universal MCP Backend Core          │
+                  │   (HSE · ISA Audit · ISOERP · North Star)    │
+                  └──────────────▲────────────────▲──────────────┘
+                                 │                │
+            Direct MCP SSE Wire  │                │ Ingress Tool Dispatch
+                                 │                │
+                  ┌──────────────┴───────┐ ┌──────┴──────────────┐
+                  │  Anthropic Directory │ │  WhatsApp Robot     │
+                  │   Claude Connectors  │ │     Clients         │
+                  │  (claude.ai users)   │ │  (Field/Mobile)     │
+                  └──────────────────────┘ └─────────────────────┘
+```
+
+* **Single Source of Truth**: The MCP servers house the true business logic, database models, and ISO compliance rules.
+* **Anthropic Directory Scope**: Anthropic's directory accepts the backend MCP server URLs. It does not list WhatsApp bot code.
+* **Dual Benefit**: By standardizing, hardening, and securing the MCP servers for Anthropic Directory certification (clean schemas, strict type safety, OAuth 2.1 PKCE), the WhatsApp robots automatically gain higher reliability, faster execution, and zero schema drift.
+
