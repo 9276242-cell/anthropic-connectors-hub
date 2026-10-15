@@ -1,0 +1,69 @@
+{
+  "name": "ISA Audit Hub",
+  "version": "1.0.0",
+  "description": "Professional auditing workspace for International Standards on Auditing (ISA 315, 500, 700), substantive sampling, materiality calculation, and Shariah audit governance.",
+  "category": "Legal & Compliance",
+  "homepage": "https://isa.isoerp.com",
+  "privacyPolicy": "https://isa.isoerp.com/privacy",
+  "termsOfService": "https://isa.isoerp.com/terms",
+  "transport": {
+    "type": "sse",
+    "url": "https://isa.isoerp.com/mcp/sse"
+  },
+  "authentication": {
+    "type": "oauth2",
+    "authorizationUrl": "https://auth.isoerp.com/oauth2/authorize",
+    "tokenUrl": "https://auth.isoerp.com/oauth2/token",
+    "pkce": true,
+    "scopes": [
+      "isa.standards.read",
+      "isa.workpapers.read",
+      "isa.workpapers.write",
+      "isa.sampling.read"
+    ]
+  },
+  "tools": [
+    {
+      "name": "lookup_auditing_standard",
+      "description": "Search and retrieve authoritative guidance text from ISA and Shariah auditing standards.",
+      "readOnlyHint": true,
+      "parameters": {
+        "type": "object",
+        "required": ["standardNumber"],
+        "properties": {
+          "standardNumber": { "type": "string" },
+          "query": { "type": "string" }
+        }
+      }
+    },
+    {
+      "name": "calculate_materiality_thresholds",
+      "description": "Calculate overall planning materiality, performance materiality, and clearly trivial thresholds according to ISA 320 guidelines.",
+      "readOnlyHint": true,
+      "parameters": {
+        "type": "object",
+        "required": ["benchmarkMetric", "benchmarkValue"],
+        "properties": {
+          "benchmarkMetric": { "type": "string", "enum": ["revenue", "profitBeforeTax", "totalAssets", "equity"] },
+          "benchmarkValue": { "type": "number" },
+          "riskTolerance": { "type": "string", "enum": ["low", "normal", "high"] }
+        }
+      }
+    },
+    {
+      "name": "record_audit_finding",
+      "description": "Record an identified deficiency, internal control weakness, or non-compliance finding into the engagement workpaper.",
+      "destructiveHint": true,
+      "parameters": {
+        "type": "object",
+        "required": ["engagementId", "title", "standardRef", "findingDetails"],
+        "properties": {
+          "engagementId": { "type": "string" },
+          "title": { "type": "string" },
+          "standardRef": { "type": "string" },
+          "findingDetails": { "type": "string" }
+        }
+      }
+    }
+  ]
+}

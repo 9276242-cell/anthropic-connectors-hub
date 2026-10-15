@@ -1,0 +1,72 @@
+{
+  "name": "HSE Management Suite",
+  "version": "1.0.0",
+  "description": "Comprehensive Health, Safety, and Environment incident logging, risk assessment matrices, compliance audits, and digital permit to work workflows.",
+  "category": "Operations",
+  "homepage": "https://hse.isoerp.com",
+  "privacyPolicy": "https://hse.isoerp.com/privacy",
+  "termsOfService": "https://hse.isoerp.com/terms",
+  "transport": {
+    "type": "sse",
+    "url": "https://hse.isoerp.com/mcp/sse"
+  },
+  "authentication": {
+    "type": "oauth2",
+    "authorizationUrl": "https://auth.isoerp.com/oauth2/authorize",
+    "tokenUrl": "https://auth.isoerp.com/oauth2/token",
+    "pkce": true,
+    "scopes": [
+      "hse.incidents.read",
+      "hse.incidents.write",
+      "hse.audits.read",
+      "hse.permits.write"
+    ]
+  },
+  "tools": [
+    {
+      "name": "list_incidents",
+      "description": "Retrieve recent safety and environmental incidents filtered by status, severity, or date range.",
+      "readOnlyHint": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": ["low", "medium", "high", "critical"]
+          },
+          "limit": {
+            "type": "integer",
+            "default": 10
+          }
+        }
+      }
+    },
+    {
+      "name": "create_incident_ticket",
+      "description": "Log an OSHA-compliant workplace safety incident or near-miss observation.",
+      "destructiveHint": true,
+      "parameters": {
+        "type": "object",
+        "required": ["facility", "title", "description", "severity"],
+        "properties": {
+          "facility": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] }
+        }
+      }
+    },
+    {
+      "name": "get_hazard_matrix",
+      "description": "Fetch current Hazard Identification and Risk Assessment (HIRA) registers for a specified facility.",
+      "readOnlyHint": true,
+      "parameters": {
+        "type": "object",
+        "required": ["facility"],
+        "properties": {
+          "facility": { "type": "string" }
+        }
+      }
+    }
+  ]
+}

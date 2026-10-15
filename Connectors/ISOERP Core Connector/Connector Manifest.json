@@ -1,0 +1,67 @@
+{
+  "name": "ISOERP Enterprise System",
+  "version": "1.0.0",
+  "description": "Enterprise resource planning platform engineered around international ISO standards (ISO 9001, 14001, 27001) for supply chain, inventory, and quality assurance.",
+  "category": "Enterprise Software",
+  "homepage": "https://isoerp.com",
+  "privacyPolicy": "https://isoerp.com/privacy",
+  "termsOfService": "https://isoerp.com/terms",
+  "transport": {
+    "type": "sse",
+    "url": "https://gateway.isoerp.com/mcp/sse"
+  },
+  "authentication": {
+    "type": "oauth2",
+    "authorizationUrl": "https://auth.isoerp.com/oauth2/authorize",
+    "tokenUrl": "https://auth.isoerp.com/oauth2/token",
+    "pkce": true,
+    "scopes": [
+      "isoerp.documents.read",
+      "isoerp.inventory.read",
+      "isoerp.approvals.write",
+      "isoerp.quality.write"
+    ]
+  },
+  "tools": [
+    {
+      "name": "search_quality_documents",
+      "description": "Search controlled standard operating procedures, policies, and revision histories across the ISO document repository.",
+      "readOnlyHint": true,
+      "parameters": {
+        "type": "object",
+        "required": ["query"],
+        "properties": {
+          "query": { "type": "string" },
+          "standardFilter": { "type": "string", "enum": ["ISO 9001", "ISO 14001", "ISO 27001", "ISO 45001"] }
+        }
+      }
+    },
+    {
+      "name": "query_inventory_status",
+      "description": "Retrieve current stock levels, warehouse batches, and quarantine inspection states.",
+      "readOnlyHint": true,
+      "parameters": {
+        "type": "object",
+        "required": ["itemCode"],
+        "properties": {
+          "itemCode": { "type": "string" },
+          "facility": { "type": "string" }
+        }
+      }
+    },
+    {
+      "name": "create_corrective_action_request",
+      "description": "Create an ISO non-conformance ticket and assign root cause analysis ownership.",
+      "destructiveHint": true,
+      "parameters": {
+        "type": "object",
+        "required": ["title", "department", "issueDescription"],
+        "properties": {
+          "title": { "type": "string" },
+          "department": { "type": "string" },
+          "issueDescription": { "type": "string" }
+        }
+      }
+    }
+  ]
+}

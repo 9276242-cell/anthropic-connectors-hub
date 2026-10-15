@@ -1,0 +1,66 @@
+{
+  "name": "ISOERP North Star Executive Dashboard",
+  "version": "1.0.0",
+  "description": "Executive intelligence and strategic KPI tracking for quality maturity, ESG index scoring, continuous improvement velocity, and corporate governance.",
+  "category": "Analytics & Reporting",
+  "homepage": "https://northstar.isoerp.com",
+  "privacyPolicy": "https://northstar.isoerp.com/privacy",
+  "termsOfService": "https://northstar.isoerp.com/terms",
+  "transport": {
+    "type": "sse",
+    "url": "https://northstar.isoerp.com/mcp/sse"
+  },
+  "authentication": {
+    "type": "oauth2",
+    "authorizationUrl": "https://auth.isoerp.com/oauth2/authorize",
+    "tokenUrl": "https://auth.isoerp.com/oauth2/token",
+    "pkce": true,
+    "scopes": [
+      "northstar.kpis.read",
+      "northstar.benchmarking.read",
+      "northstar.targets.write"
+    ]
+  },
+  "tools": [
+    {
+      "name": "get_executive_kpi_summary",
+      "description": "Retrieve aggregated high-level business performance metrics, quality yield, and ESG compliance scores.",
+      "readOnlyHint": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "period": { "type": "string", "enum": ["currentQuarter", "yearToDate", "trailing12Months"] }
+        }
+      }
+    },
+    {
+      "name": "compare_facility_performance",
+      "description": "Benchmark operational efficiency and audit compliance across multiple corporate facilities.",
+      "readOnlyHint": true,
+      "parameters": {
+        "type": "object",
+        "required": ["facilityList"],
+        "properties": {
+          "facilityList": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    {
+      "name": "update_strategic_target",
+      "description": "Set or adjust quarterly operational target thresholds on the executive scorecard.",
+      "destructiveHint": true,
+      "parameters": {
+        "type": "object",
+        "required": ["targetKey", "newTargetValue", "quarter"],
+        "properties": {
+          "targetKey": { "type": "string" },
+          "newTargetValue": { "type": "number" },
+          "quarter": { "type": "string" }
+        }
+      }
+    }
+  ]
+}
